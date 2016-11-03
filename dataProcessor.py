@@ -77,7 +77,22 @@ def Q1_Preprocessor_TrainData(url, labels, num_features, num_samples, num_classe
     return df
 
 #we need to put our testData in a dataframe as well
-#def Q1_Preprocessor_TestData():
+def Q1_Preprocessor_TestData(url, num_features,num_samples):
+    data = urllib2.urlopen(url).read()   #read the data from url
+    columnNames = []
+    for x in range(1,num_features+1):
+        columnNames.append("{}_{}".format("Col", x))
+        #print("{}_{}".format("Col", x))
+    #df = pd.DataFrame(data.split(), columns=Q1_columns)
+    dataSeries = []
+    for line in data.split():
+        dataSeries.append(line)                 #build list from raw data
+        #print line
+
+    a = pd.Series(dataSeries)                        #build series from list
+    b = a.values.reshape(num_samples,num_features)       #reshape series to correct 2d dimensions
+    df = pd.DataFrame(b, columns=columnNames)            #build dataframe with column names
+    return df
 
 
 
@@ -87,7 +102,7 @@ def Q1_Preprocessor_TrainData(url, labels, num_features, num_samples, num_classe
 - 35 rows(samples) and 4434 columns(features) and 4 classes
 '''
 TrainData1_df = Q1_Preprocessor_TrainData(TrainData1,TrainLabel1, 4434,35,4)
-print(TrainData1_df)
+#print(TrainData1_df)
 
 
 '''
@@ -103,3 +118,22 @@ TrainData2_df = Q1_Preprocessor_TrainData(TrainData2, TrainLabel2, 3312,150,5)
 '''
 TrainData3_df = Q1_Preprocessor_TrainData(TrainData3,TrainLabel3, 9182,100,11)
 #print(TrainData3_df)
+
+
+'''
+- Put TestData1 for question 1 in a dataframe for easy processing
+'''
+TestData1_df = Q1_Preprocessor_TestData(TestData1, 4434, 15)
+#print(TestData1_df)
+
+'''
+- Put TestData2 for question 1 in a dataframe for easy processing
+'''
+TestData2_df = Q1_Preprocessor_TestData(TestData2, 3312, 53)
+#print(TestData2_df)
+
+'''
+- Put TestData3 for question 1 in a dataframe for easy processing
+'''
+TestData3_df = Q1_Preprocessor_TestData(TestData3, 9182, 74)
+#print(TestData3_df)
