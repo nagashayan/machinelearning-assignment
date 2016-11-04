@@ -94,8 +94,29 @@ def Q1_Preprocessor_TestData(url, num_features,num_samples):
     df = pd.DataFrame(b, columns=columnNames)            #build dataframe with column names
     return df
 
+#we need to put our testData in a dataframe as well
+def Q2_Preprocessor_TestData(url, num_features,num_samples):
+    data = urllib2.urlopen(url).read()   #read the data from url
+    columnNames = []
+    for x in range(1,num_features+1):
+        columnNames.append("{}_{}".format("Col", x))
+        #print("{}_{}".format("Col", x))
+    #df = pd.DataFrame(data.split(), columns=Q1_columns)
+    dataSeries = []
+    for line in data.split():
+        dataSeries.append(line)                 #build list from raw data
+        #print line
 
 
+    a = pd.Series(dataSeries)                        #build series from list
+    b = a.values.reshape(num_samples,num_features)       #reshape series to correct 2d dimensions
+    df = pd.DataFrame(b, columns=columnNames)            #build dataframe with column names
+    df2 = df.replace('1.00000000000000e+99', np.nan)       #set missing values to NaN
+    return df2
+
+#####################################################################################
+#     FOR QUESTION 1
+##############################################################################
 
 '''
 - Preprocess TrainData1 for question 1
@@ -120,6 +141,9 @@ TrainData3_df = Q1_Preprocessor_TrainData(TrainData3,TrainLabel3, 9182,100,11)
 #print(TrainData3_df)
 
 
+
+
+
 '''
 - Put TestData1 for question 1 in a dataframe for easy processing
 '''
@@ -137,3 +161,34 @@ TestData2_df = Q1_Preprocessor_TestData(TestData2, 3312, 53)
 '''
 TestData3_df = Q1_Preprocessor_TestData(TestData3, 9182, 74)
 #print(TestData3_df)
+
+
+#####################################################################################
+# FOR QUESTION 2
+##########################################################################
+
+'''
+- Put Dataset1 in a dataframe for easy processing
+- 4% missing values
+'''
+Dataset1_df = Q2_Preprocessor_TestData(Dataset1, 242,14)
+print(Dataset1_df)
+
+'''
+- Put Dataset2 in a dataframe for easy processing
+- 10% missing values
+'''
+Dataset2_df = Q2_Preprocessor_TestData(Dataset2, 758,50)
+#print(Dataset2_df)
+
+'''
+- Put Dataset3 in a dataframe for easy processing
+- 83% missing values
+'''
+Dataset3_df = Q2_Preprocessor_TestData(Dataset3, 273,79)
+#print(Dataset3_df)
+
+
+#####################################################################################
+# FOR QUESTION 3
+##########################################################################
