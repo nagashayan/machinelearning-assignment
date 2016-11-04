@@ -1,7 +1,7 @@
 import urllib2
 import pandas as pd
 import numpy as np
-
+import sys
 
 
 '''
@@ -114,81 +114,159 @@ def Q2_Preprocessor_TestData(url, num_features,num_samples):
     df2 = df.replace('1.00000000000000e+99', np.nan)       #set missing values to NaN
     return df2
 
-#####################################################################################
-#     FOR QUESTION 1
-##############################################################################
 
-'''
-- Preprocess TrainData1 for question 1
-- 35 rows(samples) and 4434 columns(features) and 4 classes
-'''
-TrainData1_df = Q1_Preprocessor_TrainData(TrainData1,TrainLabel1, 4434,35,4)
-#print(TrainData1_df)
+#This is the multi-label problem on a single data set and test set.
+#NEED TO FINISH THISSSSSSSS
+def Q3_Preprocessor_TrainData(url, labels, num_features, num_samples, num_classes):
+    data = urllib2.urlopen(url).read()   #read the data from url
+    rawLabels = urllib2.urlopen(labels).read()   #read raw labels
+    columnNames = []
+    for x in range(1,num_features+1):
+        columnNames.append("{}_{}".format("Col", x))
+        #print("{}_{}".format("Col", x))
+    #df = pd.DataFrame(data.split(), columns=Q1_columns)
+    dataSeries = []
+    sampleLabels = []
+    for line in data.split():
+        dataSeries.append(line)                 #build list from raw data
+        #print line
 
+    #we need this because there is a strange character at the end of TrainLabel2 that throws off
+    #the indexing.
+    i = 0
+    for label in rawLabels.split():
+        sampleLabels.append(label)
 
-'''
-- Preprocess TrainData2 for question 1
-- 150 rows/samples and 3312 features/columns and 5 classes
-'''
-TrainData2_df = Q1_Preprocessor_TrainData(TrainData2, TrainLabel2, 3312,150,5)
-#print(TrainData2_df)
+    labelColumns = []
+    for y in range(1, num_classes+1):
+        labelColumns.append("{}_{}".format("Class", y))
 
-'''
-- Preprocess TrainData3 for question 1
--100 rows/samples and 9182 features/columns and 11 classes
-'''
-TrainData3_df = Q1_Preprocessor_TrainData(TrainData3,TrainLabel3, 9182,100,11)
-#print(TrainData3_df)
-
-
-
-
-
-'''
-- Put TestData1 for question 1 in a dataframe for easy processing
-'''
-TestData1_df = Q1_Preprocessor_TestData(TestData1, 4434, 15)
-#print(TestData1_df)
-
-'''
-- Put TestData2 for question 1 in a dataframe for easy processing
-'''
-TestData2_df = Q1_Preprocessor_TestData(TestData2, 3312, 53)
-#print(TestData2_df)
-
-'''
-- Put TestData3 for question 1 in a dataframe for easy processing
-'''
-TestData3_df = Q1_Preprocessor_TestData(TestData3, 9182, 74)
-#print(TestData3_df)
+    a = pd.Series(dataSeries)                        #build series from list
+    a2 = pd.Series(sampleLabels)
+    b = a.values.reshape(num_samples,num_features)       #reshape series to correct 2d dimensions
+    b2 = a2.values.reshape(num_samples, num_classes)
+    df = pd.DataFrame(b, columns=columnNames)            #build dataframe with column names
+    df2 = pd.DataFrame(b2, columns=labelColumns)
+    df = pd.concat([df,df2], axis=1)                    #we add the class labels to the dataframe
+    return df
 
 
-#####################################################################################
-# FOR QUESTION 2
-##########################################################################
-
-'''
-- Put Dataset1 in a dataframe for easy processing
-- 4% missing values
-'''
-Dataset1_df = Q2_Preprocessor_TestData(Dataset1, 242,14)
-print(Dataset1_df)
-
-'''
-- Put Dataset2 in a dataframe for easy processing
-- 10% missing values
-'''
-Dataset2_df = Q2_Preprocessor_TestData(Dataset2, 758,50)
-#print(Dataset2_df)
-
-'''
-- Put Dataset3 in a dataframe for easy processing
-- 83% missing values
-'''
-Dataset3_df = Q2_Preprocessor_TestData(Dataset3, 273,79)
-#print(Dataset3_df)
+done = False
+while(done == False):
+    sys.stdout.write("\r")
+    sys.stdout.write("Retrieving Data...")
+    sys.stdout.flush()
 
 
-#####################################################################################
-# FOR QUESTION 3
-##########################################################################
+
+
+    #####################################################################################
+    #     FOR QUESTION 1
+    ##############################################################################
+
+    '''
+    - Preprocess TrainData1 for question 1
+    - 35 rows(samples) and 4434 columns(features) and 4 classes
+    - the classes are concatenated onto the end of the dataframe
+    '''
+    TrainData1_df = Q1_Preprocessor_TrainData(TrainData1,TrainLabel1, 4434,35,4)
+    #print(TrainData1_df)
+
+
+    '''
+    - Preprocess TrainData2 for question 1
+    - 150 rows/samples and 3312 features/columns and 5 classes
+    - the classes are concatenated onto the end of the dataframe
+    '''
+    TrainData2_df = Q1_Preprocessor_TrainData(TrainData2, TrainLabel2, 3312,150,5)
+    #print(TrainData2_df)
+
+    '''
+    - Preprocess TrainData3 for question 1
+    -100 rows/samples and 9182 features/columns and 11 classes
+    - the classes are concatenated onto the end of the dataframe
+    '''
+    TrainData3_df = Q1_Preprocessor_TrainData(TrainData3,TrainLabel3, 9182,100,11)
+    #print(TrainData3_df)
+
+
+
+
+
+    '''
+    - Put TestData1 for question 1 in a dataframe for easy processing
+    '''
+    TestData1_df = Q1_Preprocessor_TestData(TestData1, 4434, 15)
+    #print(TestData1_df)
+
+    '''
+    - Put TestData2 for question 1 in a dataframe for easy processing
+    '''
+    TestData2_df = Q1_Preprocessor_TestData(TestData2, 3312, 53)
+    #print(TestData2_df)
+
+    '''
+    - Put TestData3 for question 1 in a dataframe for easy processing
+    '''
+    TestData3_df = Q1_Preprocessor_TestData(TestData3, 9182, 74)
+    #print(TestData3_df)
+
+    ############################################################################
+
+    ############################################################################
+
+    sys.stdout.write("\r")
+    sys.stdout.write("Processing Data...")
+    sys.stdout.flush()
+
+
+    #####################################################################################
+    # FOR QUESTION 2
+    ##########################################################################
+
+    '''
+    - Put Dataset1 in a dataframe for easy processing
+    - 4% missing values
+    '''
+    Dataset1_df = Q2_Preprocessor_TestData(Dataset1, 242,14)
+    #print(Dataset1_df)
+
+    '''
+    - Put Dataset2 in a dataframe for easy processing
+    - 10% missing values
+    '''
+    Dataset2_df = Q2_Preprocessor_TestData(Dataset2, 758,50)
+    #print(Dataset2_df)
+
+    '''
+    - Put Dataset3 in a dataframe for easy processing
+    - 83% missing values
+    '''
+    Dataset3_df = Q2_Preprocessor_TestData(Dataset3, 273,79)
+    #print(Dataset3_df)
+
+
+
+    #####################################################################################
+    # FOR QUESTION 3
+    ##########################################################################
+
+    '''
+    - our training data for question 3
+    - 103 features, 500 samples, 14 classes
+    - note: there are 117 columns because 103_featueres + 14_classes = 117
+    '''
+    MultLabelTrainData_df = Q3_Preprocessor_TrainData(MultiLabelTrainData, MultiLabelTrainLabel, 103,500,14)
+    #print(MultLabelTrainData_df)
+
+    '''
+    - Our test data for question 3
+    - 103 features and 100 samples
+    - need to predict the binary values of 14 classes
+    '''
+    MultiLabelTestData_df = Q1_Preprocessor_TestData(MultiLabelTestData, 103,100)
+    #print(MultiLabelTestData_df)
+
+    done = True
+
+sys.stdout.write("\rPreprocessing Complete!         \n")
