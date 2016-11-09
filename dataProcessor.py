@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import sys
 
+#global variable to store training dataset with out class info - helps in normalizing
+TrainData1Dateset  = ""
 
 '''
 Datasets for problem 1
@@ -43,6 +45,7 @@ MultiLabelTestData = "http://grid.cs.gsu.edu/zcai/course/8850/Dataset/MultLabelT
 #IMPORTANT:  we assume that the first (num_features) constitute one sample. And the second (num_features)
 #constitute the second sample, and so on
 def Q1_Preprocessor_TrainData(url, labels, num_features, num_samples, num_classes):
+    global TrainData1Dateset
     data = urllib2.urlopen(url).read()   #read the data from url
     rawLabels = urllib2.urlopen(labels).read()   #read raw labels
     columnNames = []
@@ -72,6 +75,7 @@ def Q1_Preprocessor_TrainData(url, labels, num_features, num_samples, num_classe
     a = pd.Series(dataSeries)                        #build series from list
     b = a.values.reshape(num_samples,num_features)       #reshape series to correct 2d dimensions
     df = pd.DataFrame(b, columns=columnNames)            #build dataframe with column names
+    TrainData1Dateset = df
     df2 = pd.DataFrame({'Class': sampleLabels})
     df = pd.concat([df,df2], axis=1)                    #we add the class labels to the dataframe
     return df
