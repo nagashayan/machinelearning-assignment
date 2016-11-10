@@ -10,7 +10,7 @@ testset1 = data.TestData1_df
 
 
 #our dataset is not homogeneous so need to convert to numeric type
-dataset1 = data.TrainData1Dateset.convert_objects(convert_numeric=True)
+dataset1 = data.TrainData1_df.convert_objects(convert_numeric=True)
 
 print 'Normalizing data set'
 
@@ -24,5 +24,3 @@ print 'Normalizing test set'
 testset1 =  (testset1 - testset1.mean()) / (testset1.max() - testset1.min())
 
 print testset1
-
-

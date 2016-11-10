@@ -2,6 +2,7 @@ import urllib2
 import pandas as pd
 import numpy as np
 import sys
+from sklearn import preprocessing
 
 #global variable to store training dataset with out class info - helps in normalizing
 TrainData1Dateset  = ""
@@ -78,7 +79,7 @@ def Q1_Preprocessor_TrainData(url, labels, num_features, num_samples, num_classe
     TrainData1Dateset = df
     df2 = pd.DataFrame({'Class': sampleLabels})
     df = pd.concat([df,df2], axis=1)                    #we add the class labels to the dataframe
-    return df
+    return df,df2
 
 #we need to put our testData in a dataframe as well
 def Q1_Preprocessor_TestData(url, num_features,num_samples):
@@ -173,7 +174,16 @@ while(done == False):
     - 35 rows(samples) and 4434 columns(features) and 4 classes
     - the classes are concatenated onto the end of the dataframe
     '''
-    TrainData1_df = Q1_Preprocessor_TrainData(TrainData1,TrainLabel1, 4434,35,4)
+    TrainData1_df, TrainData1_labels = Q1_Preprocessor_TrainData(TrainData1,TrainLabel1, 4434,35,4) #features and labels
+    TrainData1_features = TrainData1_df.ix[:,0:4434].values #just features
+
+
+    #normalize data
+    min_max_scaler = preprocessing.MinMaxScaler()
+    x_scaled = min_max_scaler.fit_transform(TrainData1_features)
+    TrainData1_normalized = pd.DataFrame(x_scaled) #normalized features
+
+    TrainData1_final = pd.concat([TrainData1_normalized,TrainData1_labels], axis=1)  #contains normalized features and raw labels              #we add the class labels to the dataframe
     #print(TrainData1_df)
 
 
@@ -182,7 +192,16 @@ while(done == False):
     - 150 rows/samples and 3312 features/columns and 5 classes
     - the classes are concatenated onto the end of the dataframe
     '''
-    TrainData2_df = Q1_Preprocessor_TrainData(TrainData2, TrainLabel2, 3312,150,5)
+    TrainData2_df, TrainData2_labels = Q1_Preprocessor_TrainData(TrainData2, TrainLabel2, 3312,150,5)
+    TrainData2_features = TrainData2_df.ix[:,0:3312].values #just features
+
+
+    #normalize data
+    min_max_scaler = preprocessing.MinMaxScaler()
+    x_scaled = min_max_scaler.fit_transform(TrainData2_features)
+    TrainData2_normalized = pd.DataFrame(x_scaled) #normalized feature data
+
+    TrainData2_final = pd.concat([TrainData2_normalized,TrainData2_labels], axis=1)  #contains normalized features and raw labels              #we add the class labels to the dataframe
     #print(TrainData2_df)
 
     '''
@@ -190,7 +209,16 @@ while(done == False):
     -100 rows/samples and 9182 features/columns and 11 classes
     - the classes are concatenated onto the end of the dataframe
     '''
-    TrainData3_df = Q1_Preprocessor_TrainData(TrainData3,TrainLabel3, 9182,100,11)
+    TrainData3_df, TrainData3_labels = Q1_Preprocessor_TrainData(TrainData3,TrainLabel3, 9182,100,11)
+    TrainData3_features = TrainData3_df.ix[:,0:9182].values #just features
+
+
+    #normalize data
+    min_max_scaler = preprocessing.MinMaxScaler()
+    x_scaled = min_max_scaler.fit_transform(TrainData3_features)
+    TrainData3_normalized = pd.DataFrame(x_scaled) # normalized features
+
+    TrainData3_final = pd.concat([TrainData3_normalized,TrainData3_labels], axis=1)  #contains normalized features and raw labels              #we add the class labels to the dataframe
     #print(TrainData3_df)
 
 
@@ -201,18 +229,30 @@ while(done == False):
     - Put TestData1 for question 1 in a dataframe for easy processing
     '''
     TestData1_df = Q1_Preprocessor_TestData(TestData1, 4434, 15)
+    #normalize data
+    min_max_scaler = preprocessing.MinMaxScaler()
+    x_scaled = min_max_scaler.fit_transform(TestData1_df)
+    TestData1_normalized = pd.DataFrame(x_scaled) # normalized features
     #print(TestData1_df)
 
     '''
     - Put TestData2 for question 1 in a dataframe for easy processing
     '''
     TestData2_df = Q1_Preprocessor_TestData(TestData2, 3312, 53)
+    #normalize data
+    min_max_scaler = preprocessing.MinMaxScaler()
+    x_scaled = min_max_scaler.fit_transform(TestData2_df)
+    TestData2_normalized = pd.DataFrame(x_scaled) # normalized features
     #print(TestData2_df)
 
     '''
     - Put TestData3 for question 1 in a dataframe for easy processing
     '''
     TestData3_df = Q1_Preprocessor_TestData(TestData3, 9182, 74)
+    #normalize data
+    min_max_scaler = preprocessing.MinMaxScaler()
+    x_scaled = min_max_scaler.fit_transform(TestData3_df)
+    TestData3_normalized = pd.DataFrame(x_scaled) # normalized features
     #print(TestData3_df)
 
     ############################################################################
