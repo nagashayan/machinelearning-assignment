@@ -4,10 +4,9 @@ X = data.X
 y = data.y
 
 from sklearn import metrics
-from sklearn.neighbors import KNeighborsClassifier
-# fit a k-nearest neighbor model to the data
-
-model = KNeighborsClassifier()
+from sklearn.svm import SVC
+# fit a SVM model to the data
+model = SVC()
 model.fit(X, y)
 print(model)
 # make predictions

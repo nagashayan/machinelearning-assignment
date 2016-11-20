@@ -3,11 +3,11 @@ import  dataloding as data
 X = data.X
 y = data.y
 
-from sklearn import metrics
-from sklearn.neighbors import KNeighborsClassifier
-# fit a k-nearest neighbor model to the data
 
-model = KNeighborsClassifier()
+from sklearn import metrics
+from sklearn.tree import DecisionTreeClassifier
+# fit a CART model to the data
+model = DecisionTreeClassifier()
 model.fit(X, y)
 print(model)
 # make predictions
