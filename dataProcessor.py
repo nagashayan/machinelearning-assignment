@@ -165,7 +165,7 @@ def Q3_Preprocessor_TrainData(url, labels, num_features, num_samples, num_classe
     df = pd.DataFrame(b, columns=columnNames)            #build dataframe with column names
     df2 = pd.DataFrame(b2, columns=labelColumns)
     df = pd.concat([df,df2], axis=1)                    #we add the class labels to the dataframe
-    return df
+    return df,df2
 
 
 done = False
@@ -280,8 +280,9 @@ while(done == False):
     - 103 features, 500 samples, 14 classes
     - note: there are 117 columns because 103_featueres + 14_classes = 117
     '''
-    MultLabelTrainData_df = Q3_Preprocessor_TrainData(MultiLabelTrainData, MultiLabelTrainLabel, 103,500,14)
-    #print(MultLabelTrainData_df)
+    MultiLabelTrainData_df,MultiLabelTrainData_labels = Q3_Preprocessor_TrainData(MultiLabelTrainData, MultiLabelTrainLabel, 103,500,14)
+    MultiLabelTrainData_features = MultiLabelTrainData_df.ix[:,0:103].values #just features
+
 
     '''
     - Our test data for question 3
@@ -289,7 +290,11 @@ while(done == False):
     - need to predict the binary values of 14 classes
     '''
     MultiLabelTestData_df = Q1_Preprocessor_TestData(MultiLabelTestData, 103,100)
-    #print(MultiLabelTestData_df)
+    MultiLabelTestData = MultiLabelTestData_df.values
+    MultiLabelTestData_df = pd.DataFrame(MultiLabelTestData)
+
+    MultiLabelTrainData_normalized, MultiLabelTestData_normalized = normalize(pd.DataFrame(MultiLabelTrainData_features), MultiLabelTestData_df, 500)
+
 
     done = True
 
