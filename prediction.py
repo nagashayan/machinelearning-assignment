@@ -8,9 +8,9 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from fancyimpute import BiScaler, KNN, NuclearNormMinimization, SoftImpute, MICE
 
-X = data.Dataset2_df.convert_objects(convert_numeric=True)
+X = data.Dataset3_df.convert_objects(convert_numeric=True)
 y = data.TrainData2_labels.convert_objects(convert_numeric=True)
-y = y[0:50]
+y = y[0:79]
 np.set_printoptions(threshold=np.nan)
 #print X
 print X.shape
@@ -45,7 +45,7 @@ print (X1.values == 0).sum()
 #print X1
 print "*****"
 y = pd.concat([y,y], axis=0)
-y = y[0:50]
+y = y[0:79]
 print y
 print y.shape
 y = y.values.ravel()
@@ -84,8 +84,8 @@ print model.score(X,y)*100
 print X
 X = pd.DataFrame(X)
 print "converted"
-X.to_csv("22.csv")
-np.savetxt('22.txt', X.values, fmt='%f')
+X.to_csv("23.csv")
+np.savetxt('23.txt', X.values, fmt='%f')
 print "count"
 print (X.values == 0).sum()
 #X.plot(kind = 'hist')
